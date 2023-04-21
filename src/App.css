@@ -1,42 +1,205 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Fonts */
+
+/* Press Start 2P */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* varible */
+:root {
+    /* body */
+    --body-bg-color: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%);
+
+    /* .clock-container  */
+    --cc-border-color: #20C20E;
+    --cc-box-shadow-color: #20a311;
+
+    /* #break-decrement && #session-decrement */
+    --bd-sd-border-color: #20C20E;
+
+    /* #break-increment && #session-increment */
+    --bi-si-border-color: #20C20E;
+
+    /* #start_stop && #reset */
+    --s-r-border-color: #ffffffb6;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+* {
+    margin: 0;
+    padding: 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+    font-family: 'Press Start 2P', cursive;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--body-bg-color);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* start clock-container */
+
+.clock-container {
+    height: 90vh;
+    width: 85vw;
+
+    display: grid;
+    grid-template-rows: 20% 1fr 1fr 45%;
+
+    border: 5px solid var(--cc-border-color);
+    -webkit-box-shadow: 0px 0px 39px 7px var(--cc-box-shadow-color);
+    -moz-box-shadow: 0px 0px 39px 7px var(--cc-box-shadow-color);
+    box-shadow: 0px 0px 39px 7px var(--cc-box-shadow-color);
+    border-radius: 20px;
 }
 
-.card {
-  padding: 2em;
+.clock-title {
+    font-size: 2rem;
+    text-align: center;
+    margin: 1rem;
 }
 
-.read-the-docs {
-  color: #888;
+/* end clock-container */
+
+/* start label */
+
+#break-label,
+#session-label {
+    display: grid;
+    grid-template: repeat(2, 1fr) / repeat(3, 1fr);
+    width: 100%;
+}
+
+#break-label h2 {
+    grid-column: 1 / span 3;
+    text-align: center;
+    font-size: 1rem;
+}
+
+#session-label h2 {
+    grid-column: 1 / span 3;
+    text-align: center;
+    font-size: 1rem;
+}
+
+#break-decrement,
+#session-decrement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1 / span 1;
+    align-self: center;
+    justify-self: center;
+    border-radius: 20px;
+    width: 10vw;
+    border: 2px solid var(--bd-sd-border-color);
+}
+
+#break-length,
+#session-length {
+    grid-column: 2 / span 1;
+    align-self: center;
+    justify-self: center;
+}
+
+#break-increment,
+#session-increment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 3 / span 1;
+    align-self: center;
+    justify-self: center;
+    border-radius: 20px;
+    width: 10vw;
+    border: 2px solid var(--bi-si-border-color);
+}
+
+#timer-label {
+    display: grid;
+    grid-template: 20% 1fr 20% / repeat(2, 1fr);
+    margin: 1rem;
+}
+
+#timer-label h2 {
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 1;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+#time-left {
+    grid-column: 1 / span 3;
+    grid-row: 2 / span 1;
+    align-self: center;
+    justify-self: center;
+    font-size: 2.5rem;
+    border-radius: 20px;
+}
+
+#start_stop,
+#reset {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-row: 3 / span 1;
+    align-self: center;
+    justify-self: center;
+    width: 30vw;
+    border: 2px solid var(--s-r-border-color);
+}
+
+#start_stop {
+    grid-column: 1 / span 1;
+}
+
+#reset {
+    grid-column: 2 / span 1;
+}
+
+/* end label */
+
+/* rwd */
+
+@media (min-width: 769px) {
+    .clock-container {
+        height: 80vh;
+        width: 70vw;
+        grid-template-columns: 3% 1fr 3% 1fr 3%;
+        grid-template-rows: 15% 1fr 60%;
+    }
+
+    .clock-title {
+        font-size: 2rem;
+        grid-column: 1 / span 4;
+        grid-row: 1/ span 1;
+    }
+
+    #break-label {
+        grid-column: 2 / span 1;
+        grid-row: 2/ span 1;
+    }
+
+    #session-label {
+        grid-column: 4 / span 1;
+        grid-row: 2/ span 1;
+    }
+
+    #break-label h2,
+    #session-label h2 {
+        font-size: 1.3rem
+    }
+
+    #timer-label {
+        grid-column: 1 / span 4;
+        grid-row: 3/ span 1;
+    }
+
+    #timer-label h2 {
+        font-size: 2rem;
+    }
+
+    #time-left {
+        font-size: 5rem;
+    }
 }
