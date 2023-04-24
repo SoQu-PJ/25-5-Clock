@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop, faRepeat } from "@fortawesome/free-solid-svg-icons";
 
-const TimerLabel = () => {
+const TimerLabel = (props: any) => {
     return (
         <section id="timer-label">
             <h2>Session</h2>

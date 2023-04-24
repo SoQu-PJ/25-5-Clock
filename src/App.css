@@ -177,6 +177,20 @@ body {
     grid-column: 2 / span 1;
 }
 
+/* :hover */
+#start_stop:hover,
+#reset:hover {
+    border-color: red;
+}
+
+#break-decrement:hover,
+#break-increment:hover,
+#session-decrement:hover,
+#session-increment:hover {
+    border-color: white;
+}
+
+
 /* end label */
 
 /* rwd */

@@ -13,7 +13,7 @@ function App() {
       <h1 className='clock-title'>25 + 5 Clock</h1>
       <BreakLabel breakLength={breakLength} setBreakLength={setBreakLength} />
       <SessionLabel breakSession={breakSession} setBreakSession={setBreakSession} />
-      <TimerLabel />
+      <TimerLabel breakSession={breakSession} breakLength={breakLength} />
     </main>
   )
 }
