@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,6 +12,10 @@ const SessionLabel = (props: any) => {
         if (props.breakSession < 60)
             props.setBreakSession((prev: number) => prev + 1);
     }
+
+    useEffect(() => {
+        props.breakSession > 9 ? props.setMin(props.breakSession) : props.setMin('0' + props.breakSession);
+    }, [props.breakSession]);
 
     return (
         <section id="session-label">
