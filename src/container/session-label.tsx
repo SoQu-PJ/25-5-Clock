@@ -14,7 +14,7 @@ const SessionLabel = (props: any) => {
     }
 
     useEffect(() => {
-        props.breakSession > 9 ? props.setMin(props.breakSession) : props.setMin('0' + props.breakSession);
+        props.setSeconds(props.breakSession * 60);
     }, [props.breakSession]);
 
     return (

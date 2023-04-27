@@ -8,20 +8,25 @@ function App() {
   const [breakLength, setBreakLength] = useState<number>(5);
   const [breakSession, setBreakSession] = useState<number>(25);
 
-  const [min, setMin] = useState<string>('00')
+  const [seconds, setSeconds] = useState<number>(0)
+
 
   return (
     <main className='clock-container'>
       <h1 className='clock-title'>25 + 5 Clock</h1>
-      <BreakLabel breakLength={breakLength} setBreakLength={setBreakLength} />
-      <SessionLabel breakSession={breakSession} setBreakSession={setBreakSession} setMin={setMin} />
+      <BreakLabel
+        breakLength={breakLength}
+        setBreakLength={setBreakLength} />
+      <SessionLabel
+        breakSession={breakSession}
+        setBreakSession={setBreakSession}
+        setSeconds={setSeconds} />
       <TimerLabel
         breakSession={breakSession}
         setBreakSession={setBreakSession}
         breakLength={breakLength}
-        min={min}
-        setMin={setMin}
-      />
+        seconds={seconds}
+        setSeconds={setSeconds} />
     </main>
   )
 }
