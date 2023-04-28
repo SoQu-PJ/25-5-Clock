@@ -1,27 +1,29 @@
 import { useEffect } from "react";
+import { SessionLabelInterface } from "../types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown } from "@fortawesome/free-solid-svg-icons";
 
-const SessionLabel = (props: any) => {
+const SessionLabel = ({ breakSession, setBreakSession, setSeconds }: SessionLabelInterface) => {
     const decrementHandler = () => {
-        if (props.breakSession > 1)
-            props.setBreakSession((prev: number) => prev - 1);
+        if (breakSession > 1)
+            setBreakSession((prev: number) => prev - 1);
     }
 
     const incrementHanler = () => {
-        if (props.breakSession < 60)
-            props.setBreakSession((prev: number) => prev + 1);
+        if (breakSession < 60)
+            setBreakSession((prev: number) => prev + 1);
     }
 
     useEffect(() => {
-        props.setSeconds(props.breakSession * 60);
-    }, [props.breakSession]);
+        setSeconds(breakSession * 60);
+        // setSeconds(3);
+    }, [breakSession]);
 
     return (
         <section id="session-label">
             <h2>Session Length</h2>
             <button id="session-decrement" onClick={decrementHandler}><FontAwesomeIcon icon={faCircleDown} /></button>
-            <p id="session-length">{props.breakSession}</p>
+            <p id="session-length">{breakSession}</p>
             <button id="session-increment" onClick={incrementHanler}><FontAwesomeIcon icon={faCircleUp} /></button>
         </section>
     )
