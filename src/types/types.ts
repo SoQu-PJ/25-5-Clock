@@ -11,7 +11,6 @@ export interface SessionLabelInterface {
 
 export interface TimerLabelInterface {
     breakSession: number;
-    setBreakSession: React.Dispatch<React.SetStateAction<number>>;
     breakLength: number;
     seconds: number;
     setSeconds: React.Dispatch<React.SetStateAction<number>>;

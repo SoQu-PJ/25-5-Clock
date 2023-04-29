@@ -16,8 +16,8 @@ const SessionLabel = ({ breakSession, setBreakSession, setSeconds }: SessionLabe
 
     useEffect(() => {
         setSeconds(breakSession * 60);
-        // setSeconds(3);
     }, [breakSession]);
+
 
     return (
         <section id="session-label">

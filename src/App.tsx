@@ -5,7 +5,7 @@ import TimerLabel from './container/timer-label'
 import './App.css'
 
 function App() {
-  const [breakLength, setBreakLength] = useState<number>(5);
+  const [breakLength, setBreakLength] = useState<number>(1);
   const [breakSession, setBreakSession] = useState<number>(25);
 
   const [seconds, setSeconds] = useState<number>(0)
@@ -23,7 +23,6 @@ function App() {
         setSeconds={setSeconds} />
       <TimerLabel
         breakSession={breakSession}
-        setBreakSession={setBreakSession}
         breakLength={breakLength}
         seconds={seconds}
         setSeconds={setSeconds} />
