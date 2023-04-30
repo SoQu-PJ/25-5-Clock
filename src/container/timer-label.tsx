@@ -3,18 +3,21 @@ import { TimerLabelInterface } from "../types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop, faRepeat } from "@fortawesome/free-solid-svg-icons";
 
-const TimerLabel = ({ seconds, setSeconds, breakLength, breakSession }: TimerLabelInterface) => {
+const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSession, setBreakLength, setBreakSession }: TimerLabelInterface) => {
 
     const [hrs, setHrs] = useState<number>(0);
     const [min, setMin] = useState<number>(0);
     const [sec, setSec] = useState<number>(0);
+
     const intervalref = useRef<number | null>(null);
+
     const [startBreak, setStartBreak] = useState<boolean>(false);
     const [timerTitle, setTimerTitle] = useState<boolean>(true);
     const [switchIcon, setSwitchIcon] = useState<boolean>(true);
 
     const startTimerHandler = () => {
         if (intervalref.current !== null) return;
+        if (!power) setPower(true);
 
         setSwitchIcon(false);
 
@@ -48,10 +51,18 @@ const TimerLabel = ({ seconds, setSeconds, breakLength, breakSession }: TimerLab
     }
 
     const resetTimerHandler = () => {
+        stopTimerHandler();
+        setPower(false);
+        setBreakLength(5);
+        setBreakSession(25);
         setSeconds(breakSession * 60);
         setStartBreak(false);
-        stopTimerHandler();
     }
+
+    useEffect(() => {
+        if (power || intervalref.current !== null)
+            document.title = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+    })
 
     useEffect(() => {
         return () => {
@@ -75,11 +86,15 @@ const TimerLabel = ({ seconds, setSeconds, breakLength, breakSession }: TimerLab
 
     return (
         <section id="timer-label">
-            <h2>{timerTitle ? 'Session' : 'Break'}</h2>
-            <p id="time-left">{min < 10 ? '0' : ''}{min}:{sec < 10 ? '0' : ''}{sec}</p>
+            <h2 style={seconds < 60 ? { color: 'red' } : {}}>{timerTitle ? 'Session' : 'Break'}</h2>
+            <p
+                id="time-left"
+                style={seconds < 60 ? { color: 'red' } : {}}>
+                {min < 10 ? '0' : ''}{min}:{sec < 10 ? '0' : ''}{sec}
+            </p>
             <button id="start_stop" onClick={switchIcon ? startTimerHandler : stopTimerHandler}><FontAwesomeIcon icon={switchIcon ? faPlay : faStop} /></button>
             <button id="reset" onClick={resetTimerHandler}><FontAwesomeIcon icon={faRepeat} /></button>
-        </section>
+        </section >
     )
 }
 
