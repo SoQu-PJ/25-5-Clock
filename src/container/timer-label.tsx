@@ -15,7 +15,6 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
     const timeoutref = useRef<number | null>(null);
 
     const [startBreak, setStartBreak] = useState<boolean>(false);
-    const [timerTitle, setTimerTitle] = useState<boolean>(true);
     const [switchIcon, setSwitchIcon] = useState<boolean>(true);
 
     const startTimerHandler = () => {
@@ -48,13 +47,14 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
         if (intervalref.current) {
             window.clearInterval(intervalref.current);
             intervalref.current = null;
-            setSwitchIcon((prev: boolean) => !prev);
         }
 
         if (timeoutref.current) {
             window.clearTimeout(timeoutref.current);
             timeoutref.current = null;
         }
+
+        setSwitchIcon((prev: boolean) => !prev);
     }
 
     const resetTimerHandler = () => {
@@ -99,10 +99,14 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
         setSec(seconds % 60);
 
         if (seconds < 1 && intervalref.current !== null) {
-            stopTimerHandler();
+            if (intervalref.current) {
+                window.clearInterval(intervalref.current);
+                intervalref.current = null;
+            }
+
             playAudio(true);
+
             timeoutref.current = window.setTimeout(() => {
-                setTimerTitle((prev: boolean) => !prev);
                 startTimerHandler();
             }, 3500);
         }
@@ -112,7 +116,7 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
 
     return (
         <section id="timer-label">
-            <h2 style={seconds < 60 ? { color: 'red' } : {}}>{timerTitle ? 'Session' : 'Break'}</h2>
+            <h2 style={seconds < 60 ? { color: 'red' } : {}}>{!startBreak ? 'Session' : 'Break'}</h2>
             <p
                 id="time-left"
                 style={seconds < 60 ? { color: 'red' } : {}}>
