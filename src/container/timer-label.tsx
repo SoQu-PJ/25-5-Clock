@@ -3,6 +3,8 @@ import { TimerLabelInterface } from "../types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop, faRepeat } from "@fortawesome/free-solid-svg-icons";
 
+import alarmSound from '../assets/sound/15906.mp3';
+
 const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSession, setBreakLength, setBreakSession }: TimerLabelInterface) => {
 
     const [hrs, setHrs] = useState<number>(0);
@@ -10,6 +12,7 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
     const [sec, setSec] = useState<number>(0);
 
     const intervalref = useRef<number | null>(null);
+    const timeoutref = useRef<number | null>(null);
 
     const [startBreak, setStartBreak] = useState<boolean>(false);
     const [timerTitle, setTimerTitle] = useState<boolean>(true);
@@ -19,11 +22,11 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
         if (intervalref.current !== null) return;
         if (!power) setPower(true);
 
-        setSwitchIcon(false);
+        setSwitchIcon((perv: boolean) => !perv);
 
         if (startBreak) {
             if (seconds < 1) {
-                setStartBreak((prev: boolean) => !prev)
+                setStartBreak((prev: boolean) => !prev);
                 setSeconds(breakSession * 60);
             }
             intervalref.current = window.setInterval(() => {
@@ -32,7 +35,7 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
         }
         else {
             if (seconds < 1) {
-                setStartBreak((prev: boolean) => !prev)
+                setStartBreak((prev: boolean) => !prev);
                 setSeconds(breakLength * 60);
             }
             intervalref.current = window.setInterval(() => {
@@ -45,9 +48,13 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
         if (intervalref.current) {
             window.clearInterval(intervalref.current);
             intervalref.current = null;
+            setSwitchIcon((prev: boolean) => !prev);
         }
 
-        setSwitchIcon(true);
+        if (timeoutref.current) {
+            window.clearTimeout(timeoutref.current);
+            timeoutref.current = null;
+        }
     }
 
     const resetTimerHandler = () => {
@@ -57,11 +64,26 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
         setBreakSession(25);
         setSeconds(breakSession * 60);
         setStartBreak(false);
+        playAudio(false);
+    }
+
+    const playAudio = (action: boolean) => {
+        const audio = document.getElementById("beep") as HTMLAudioElement;
+        if (action)
+            audio.play();
+        else {
+            audio.pause();
+            audio.currentTime = 0;
+        }
     }
 
     useEffect(() => {
         if (power || intervalref.current !== null)
             document.title = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+        else
+            document.title = `25-5 Clock`
+
+        console.log(timeoutref.current);
     })
 
     useEffect(() => {
@@ -77,10 +99,14 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
         setSec(seconds % 60);
 
         if (seconds < 1 && intervalref.current !== null) {
-            setTimerTitle((prev: boolean) => !prev);
             stopTimerHandler();
-            startTimerHandler();
+            playAudio(true);
+            timeoutref.current = window.setTimeout(() => {
+                setTimerTitle((prev: boolean) => !prev);
+                startTimerHandler();
+            }, 3500);
         }
+
     }, [seconds]);
 
 
@@ -92,6 +118,9 @@ const TimerLabel = ({ power, setPower, seconds, setSeconds, breakLength, breakSe
                 style={seconds < 60 ? { color: 'red' } : {}}>
                 {min < 10 ? '0' : ''}{min}:{sec < 10 ? '0' : ''}{sec}
             </p>
+            <audio id="beep">
+                <source src={alarmSound} />
+            </audio>
             <button id="start_stop" onClick={switchIcon ? startTimerHandler : stopTimerHandler}><FontAwesomeIcon icon={switchIcon ? faPlay : faStop} /></button>
             <button id="reset" onClick={resetTimerHandler}><FontAwesomeIcon icon={faRepeat} /></button>
         </section >
